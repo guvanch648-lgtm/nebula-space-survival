@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <meta name="theme-color" content="#070b18">
+    <meta name="description" content="NEBULA — kosmik kemani boshqar, asteroidlardan qoch va kosmosda omon qol!">
+    
+    <title>NEBULA — Space Survival</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main class="app">
+        <header class="topbar">
+            <div class="brand">
+                <span class="brand-icon">✦</span>
+                <div>
+                    <h1>NEBULA</h1>
+                    <p>SPACE SURVIVAL</p>
+                </div>
+            </div>
+            
+            <button id="sound-button" class="icon-button" aria-label="Ovozni yoqish yoki o‘chirish">
+                🔊
+            </button>
+        </header>
+        
+        <section class="hud">
+            <div class="hud-box">
+                <span class="hud-label">SCORE</span>
+                <strong id="score">00000</strong>
+            </div>
+            
+            <div class="hud-box">
+                <span class="hud-label">LEVEL</span>
+                <strong id="level">01</strong>
+            </div>
+            
+            <div class="hud-box">
+                <span class="hud-label">KEMA</span>
+                <strong id="lives">♥ ♥ ♥</strong>
+            </div>
+        </section>
+        
+        <section id="game-area">
+            <canvas id="game-canvas"></canvas>
+            
+            <div class="game-title">
+                <span class="live-dot"></span>
+                DEEP SPACE <span id="status-text">· STANDBY</span>
+            </div>
+            
+            <div id="start-screen" class="screen">
+                <div class="screen-content">
+                    <div class="eyebrow">MISSION CONTROL · 2089</div>
+                    <h2>Tanla.<br><span>Uch. Omon qol.</span></h2>
+                    <p class="intro">
+                        Kosmos seni kutmoqda. Kemangni tanla va noma’lum fazoga yo‘l ol.
+                    </p>
+                    
+                    <h3 class="section-label">01 / SAYYORANI TANLA</h3>
+                    
+                    <div class="cards" id="planet-cards">
+                        <button class="choice-card selected" data-planet="blue">
+                            <span class="planet planet-blue"></span>
+                            <strong>AZURA</strong>
+                            <small>Moviy sayyora</small>
+                        </button>
+                        
+                        <button class="choice-card" data-planet="purple">
+                            <span class="planet planet-purple"></span>
+                            <strong>NYX</strong>
+                            <small>Binafsha tuman</small>
+                        </button>
+                        
+                        <button class="choice-card" data-planet="red">
+                            <span class="planet planet-red"></span>
+                            <strong>PYRA</strong>
+                            <small>Olovli sayyora</small>
+                        </button>
+                    </div>
+                    
+                    <h3 class="section-label">02 / KOSMIK KEMANI TANLA</h3>
+                    
+                    <div class="cards ship-cards" id="ship-cards">
+                        <button class="choice-card selected" data-ship="fighter">
+                            <span class="ship-preview ship-blue">▲</span>
+                            <strong>PHANTOM</strong>
+                            <small>Tezkor</small>
+                        </button>
+                        
+                        <button class="choice-card" data-ship="arrow">
+                            <span class="ship-preview ship-purple">◆</span>
+                            <strong>VORTEX</strong>
+                            <small>Muvozanatli</small>
+                        </button>
+                        
+                        <button class="choice-card" data-ship="heavy">
+                            <span class="ship-preview ship-orange">⬟</span>
+                            <strong>TITAN</strong>
+                            <small>Kuchli</small>
+                        </button>
+                    </div>
+                    
+                    <button id="start-button" class="primary-button">
+                        <span>▶</span> MISSIYANI BOSHLASH
+                    </button>
+                    
+                    <p class="best-line">
+                        SHAXSIY REKORD: <strong id="menu-best">0</strong>
+                    </p>
+                </div>
+            </div>
+            
+            <div id="pause-screen" class="screen hidden">
+                <div class="dialog">
+                    <div class="eyebrow">SIGNAL PAUSED</div>
+                    <h2>PAUZA</h2>
+                    <p>Missiyang seni kutmoqda.</p>
+                    <button id="resume-button" class="primary-button">▶ DAVOM ETISH</button>
+                    <button id="menu-button" class="secondary-button">TANLOVGA QAYTISH</button>
+                </div>
+            </div>
+            
+            <div id="game-over-screen" class="screen hidden">
+                <div class="dialog">
+                    <div class="eyebrow">MISSION COMPLETE</div>
+                    <h2>O‘YIN <span>TUGADI</span></h2>
+                    <p>Bu safar kosmos g‘olib bo‘ldi. Yana bir urinib ko‘r!</p>
+                    
+                    <div class="final-score">
+                        <span>TO‘PLANGAN OCHKO</span>
+                        <strong id="final-score">0</strong>
+                    </div>
+                    
+                    <button id="restart-button" class="primary-button">↻ QAYTA BOSHLASH</button>
+                    <button id="game-over-menu-button" class="secondary-button">KEMANI ALMASHTIRISH</button>
+                </div>
+            </div>
+            
+            <button id="pause-button" class="pause-button hidden" aria-label="Pauza">
+                Ⅱ
+            </button>
+            
+            <div id="toast" class="toast hidden"></div>
+        </section>
+        
+        <section class="weapon-panel">
+            <div class="weapon-info">
+                <div>
+                    <span class="hud-label">LAZER TIZIMI</span>
+                    <strong id="laser-status">READY</strong>
+                </div>
+                <div class="energy-text">
+                    <strong id="energy-seconds">3.0s</strong>
+                    <span>ENERGIYA</span>
+                </div>
+            </div>
+            
+            <div class="energy-track">
+                <div id="energy-fill" class="energy-fill"></div>
+            </div>
+            
+            <p id="laser-hint">LAZER TAYYOR · BOSIB TURIB ISHLAT</p>
+        </section>
+        
+        <section class="controls">
+            <div class="movement-controls">
+                <button id="left-button" class="control-button" aria-label="Chapga">◀</button>
+                <button id="right-button" class="control-button" aria-label="O‘ngga">▶</button>
+            </div>
+            
+            <button id="laser-button" class="laser-button">
+                <span class="laser-symbol">ϟ</span>
+                <span class="laser-label">LAZER<small>BOSIB TUR</small></span>
+            </button>
+        </section>
+        
+        <footer class="footer">
+            <span>NEBULA SYSTEMS</span>
+            <span>FLIGHT PROTOCOL v1.0</span>
+        </footer>
+    </main>
+    
+    <script src="script.js"></script>
+</body>
+
+</html>
